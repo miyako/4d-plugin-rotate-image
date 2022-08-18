@@ -67,3 +67,7 @@ status:=Rotate image(image; rotate; format)
 `0`°の回転を適用すると，EXIFタグで指定されている本来の向きになります。
 
 <img width="499" alt="0" src="https://user-images.githubusercontent.com/1725068/185328997-1a2633b3-2231-454d-a8b2-25d13d9da0a2.png">
+
+#### 追記
+
+よくよく考えたらCONVERT PICTUREで別の（EXIFタグをサポートしていない）画像形式に変換すれば，
