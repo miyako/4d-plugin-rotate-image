@@ -1,22 +1,6 @@
 {
 	"editors": [
 		{
-			"type": "method",
-			"id": 2147483646,
-			"previousTabType": "form",
-			"previousTabID": 218,
-			"codeDescriptor": {
-				"type": 3,
-				"formName": "TEST",
-				"methodPath": "/SOURCES/Forms/TEST/method.4dm"
-			}
-		},
-		{
-			"type": "form",
-			"id": 218,
-			"formName": "TEST"
-		},
-		{
 			"type": "explorer"
 		}
 	]

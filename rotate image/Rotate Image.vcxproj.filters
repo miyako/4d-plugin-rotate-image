@@ -5,6 +5,8 @@
       <Filter>4D Plugin API</Filter>
     </ClCompile>
     <ClCompile Include="4DPlugin-Rotate-Image.cpp" />
+    <ClCompile Include="support\4DPlugin-JSON.cpp" />
+    <ClCompile Include="4D Plugin API\Classes\C_TEXT.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="4D Plugin API\4DPluginAPI.h">
@@ -23,6 +25,9 @@
       <Filter>4D Plugin API</Filter>
     </ClInclude>
     <ClInclude Include="4DPlugin-Rotate-Image.h" />
+    <ClInclude Include="support\4DPlugin-JSON.h" />
+    <ClInclude Include="4D Plugin API\Classes\C_TEXT.h" />
+    <ClInclude Include="4D Plugin API\Classes\C_TYPES.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="4D Plugin API">
