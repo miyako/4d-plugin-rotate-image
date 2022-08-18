@@ -59,4 +59,6 @@ status:=Rotate image(image; rotate; format)
 
 <img width="499" alt="4D" src="https://user-images.githubusercontent.com/1725068/185327951-e5c9c41f-7665-4623-9a30-3b4146fa62cf.png">
 
-`0`°の回転を適用すると，EXIFタグで指定した向きになります。
+`0`°の回転を適用すると，EXIFタグで指定されている本来の向きになります。
+
+<img width="499" alt="0" src="https://user-images.githubusercontent.com/1725068/185328997-1a2633b3-2231-454d-a8b2-25d13d9da0a2.png">
