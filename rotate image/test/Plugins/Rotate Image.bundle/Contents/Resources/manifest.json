@@ -1,0 +1,11 @@
+{
+    "name": "Rotate Image",
+    "id": 20000,
+    "commands": [
+        {
+            "theme": "Rotate",
+            "syntax": "Rotate image(&O;&L;&T):J",
+            "threadSafe": true
+        }
+    ]
+}

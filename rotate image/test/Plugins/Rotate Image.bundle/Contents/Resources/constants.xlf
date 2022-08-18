@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<xliff version="1.0" xmlns:d4="http://www.4d.com/d4-ns">
+    <header>
+        <note>Rotate Image</note>
+    </header>
+    <group resname="themes">
+        <trans-unit id="" resname="64AD890447574F26AF95FACDA2D9DE19" translate="no">
+            <source>Image rotation</source>
+        </trans-unit>
+    </group>
+    <group restype="x-4DK#" d4:groupName="64AD890447574F26AF95FACDA2D9DE19">
+        <trans-unit d4:value="90:L" id="64AD890447574F26AF95FACDA2D9DE19.1">
+            <source>ROTATE_90_CLOCKWISE</source>
+        </trans-unit>
+        <trans-unit d4:value="180:L" id="64AD890447574F26AF95FACDA2D9DE19.2">
+            <source>ROTATE_180</source>
+        </trans-unit>
+        <trans-unit d4:value="270:L" id="64AD890447574F26AF95FACDA2D9DE19.3">
+            <source>ROTATE_90_COUNTERCLOCKWISE</source>
+        </trans-unit>
+        <trans-unit d4:value="0:L" id="64AD890447574F26AF95FACDA2D9DE19.4">
+            <source>ROTATE_0</source>
+        </trans-unit>
+    </group>
+</xliff>
