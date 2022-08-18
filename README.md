@@ -70,4 +70,4 @@ status:=Rotate image(image; rotate; format)
 
 #### 追記
 
-よくよく考えたらCONVERT PICTUREで別の（EXIFタグをサポートしていない）画像形式に変換すれば，`0`°の回転を適用するのと同じ結果が得られるのでは・・・
+CONVERT PICTUREで別の（EXIFタグをサポートしていない）画像形式に変換すれば，`0`°の回転を適用するのと同じ結果が得られるのでは・・・
