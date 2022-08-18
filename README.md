@@ -35,3 +35,26 @@ EXIFタグで向きが設定された画像を[READ PICTURE FILE](https://doc.4d
 SVGの*transform*で回転させることもできますが，**アフィン変換**による回転になるため，画素数が多い写真の回転はそこそこ時間がかかります。
 
 `90`°または`270`°の回転さえできれば良いことを考えると，もっとシンプルな方法が理想的です。
+
+## プラグイン
+
+内部的に[OpenCV](https://opencv.org)の`cv::rotate`をコールするだけの簡単なプラグインです。
+
+#### 定数
+
+* ROTATE_90_CLOCKWISE (90)
+* ROTATE_180 (180)
+* ROTATE_90_COUNTERCLOCKWISE (279)
+* ROTATE_0 (0)
+
+```4d
+status:=Rotate image(image; rotate; format)
+```
+
+#### 例題
+
+フォームを表示すると画像が縦向きに表示されます。Finderでは横向きに表示される写真です。
+
+<img width="721" alt="finder" src="https://user-images.githubusercontent.com/1725068/185327490-af028cf6-9ee2-41f7-b336-2f157d13e62a.png">
+<img width="499" alt="ss" src="https://user-images.githubusercontent.com/1725068/185326430-f99191fc-9978-4abe-8ca1-704b074aa9d2.png">
+
