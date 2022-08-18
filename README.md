@@ -1,4 +1,4 @@
 # 4d-plugin-rotate-image
-Comparison of various image rotation code
+画像のEXIFタグを考慮して写真を回転するには
 
-* [arunumd/ImageRotationNearestNeighborCpp](https://github.com/arunumd/ImageRotationNearestNeighborCpp)
+スマートフォンで撮影した写真は，EXIFタグの*orientation*により，`90`°の回転がかけられていることがあります。
