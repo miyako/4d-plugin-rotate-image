@@ -6,7 +6,7 @@
 # 4d-plugin-rotate-image
 画像のEXIFタグを考慮して写真を回転するには
 
-some how these didn't work as expected:
+somehow these didn't work as expected:
 
 * https://github.com/arunumd/ImageRotationNearestNeighborCpp
 * https://learnopencv.com/image-rotation-and-translation-using-opencv/
