@@ -59,6 +59,21 @@ jobs:
       - name: setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
+      # lib/windows64 is gitignored (rotate image/lib/windows64/* in
+      # .gitignore) - it's never checked into this repo. The prebuilt
+      # OpenCV/jpeg/png/tiff/webp/etc. .lib files the linker needs
+      # (jpeg.lib, opencv_core.lib, ...) are instead published as a shared
+      # asset on the sibling 4d-plugin-opencv-qr repo's release, since
+      # several of this author's plugins link against the same vendored
+      # OpenCV build. Without this step the checkout has no lib directory
+      # at all and the link step fails with LNK1181 ("cannot open input
+      # file 'jpeg.lib'") after a clean compile.
+      - name: download prebuilt Windows libs
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/miyako/4d-plugin-opencv-qr/releases/download/0.0.1-lib/windows64.zip" -OutFile "windows64.zip"
+          Expand-Archive -Path "windows64.zip" -DestinationPath "lib" -Force
+
       # GitHub-hosted windows-latest ships VS2022 (v143 toolset) but not the
       # legacy v140 toolset the project is pinned to, so we override it on
       # the command line rather than requiring an extra VS component install.
