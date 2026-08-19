@@ -34,7 +34,7 @@ void PluginMain(PA_long32 selector, PA_PluginParameters params) {
 
 #pragma mark -
 
-static void getFormat(PA_PluginParameters params, short index, std::string& format){
+static bool getFormat(PA_PluginParameters params, short index, std::string& format){
     
     format = ".png";
     
@@ -46,11 +46,29 @@ static void getFormat(PA_PluginParameters params, short index, std::string& form
     t.copyUTF8String(&_format);
     
     if(_format.length() != 0) {
-        format = (const char *)_format.c_str();
-        if(format.at(0) != ',') {
-            format.insert(0, 1, ',');
+        
+        std::string requested = (const char *)_format.c_str();
+        
+        // normalize to a leading '.' rather than relying on cv::imencode's
+        // internal rfind('.') to skip over anything we happen to prepend -
+        // if the caller passed something with no dot at all, reject it
+        // explicitly instead of silently forwarding an unresolvable
+        // extension into imencode (which throws cv::Exception on an
+        // unrecognized extension).
+        if(requested.at(0) != '.') {
+            requested.insert(0, 1, '.');
         }
+        
+        if(requested.find('.', 1) != std::string::npos || requested.length() < 2) {
+            // more than one dot, or nothing after the dot: not a valid
+            // single extension
+            return false;
+        }
+        
+        format = requested;
     }
+    
+    return true;
 }
 
 static void getMat(PA_PluginParameters params, short index, int flags, cv::Mat& img){
@@ -76,58 +94,78 @@ static void Rotate_image(PA_PluginParameters params) {
     
     ob_set_b(object, L"success", false);
     
-    auto start = std::chrono::steady_clock::now();
-    
-    int degree = PA_GetLongParameter(params, 2);
-    
-    std::string format;
-    getFormat(params, 3, format);
-    
-    cv::Mat src;
-    
-    getMat(params, 1, cv::IMREAD_UNCHANGED, src);
-    
-    if (src.data != NULL)
+    // Everything below can throw (corrupt/malformed image data reaching
+    // imdecode, an unsupported channel/depth combination reaching
+    // cv::rotate, an unresolved extension or unsupported encoding reaching
+    // imencode). This command has a declared return type (see
+    // manifest.json's trailing ":J"), so the host is waiting on
+    // PA_ReturnObject - if an exception unwinds past this function and is
+    // swallowed by PluginMain's outer catch(...) without a return ever
+    // being sent, the host hangs rather than just failing gracefully.
+    // Catching here guarantees a return happens on every path.
+    try
     {
-        cv::Mat dst;
+        auto start = std::chrono::steady_clock::now();
         
-        switch (degree) {
-            case 0:
-                dst = src;
-                break;
-            case 90:
-                cv::rotate(src, dst, cv::ROTATE_90_CLOCKWISE);
-                break;
-            case 180:
-                cv::rotate(src, dst, cv::ROTATE_180);
-                break;
-            case 270:
-                cv::rotate(src, dst, cv::ROTATE_90_COUNTERCLOCKWISE);
-                break;
-                
-            default:
-            {
-                
-                //warpaffine not working as expected...
-
-            }
-                break;
-        }
+        int degree = PA_GetLongParameter(params, 2);
         
-        if (dst.data != NULL)
+        std::string format;
+        bool validFormat = getFormat(params, 3, format);
+        
+        if(validFormat)
         {
-            std::vector<uchar> buf;
-            if(imencode(format.c_str(), dst, buf)) {
-                PA_Picture straight = PA_CreatePicture(&buf[0], (PA_long32)buf.size());
-                auto end = std::chrono::steady_clock::now();
-                double count = std::chrono::duration<double>(end - start).count();
-                ob_set_p(object, L"image", straight);
-                ob_set_b(object, L"success", true);
-                ob_set_n(object, L"time", count);
-            }
+            cv::Mat src;
             
+            getMat(params, 1, cv::IMREAD_UNCHANGED, src);
+            
+            if (src.data != NULL)
+            {
+                cv::Mat dst;
+                
+                switch (degree) {
+                    case 0:
+                        dst = src;
+                        break;
+                    case 90:
+                        cv::rotate(src, dst, cv::ROTATE_90_CLOCKWISE);
+                        break;
+                    case 180:
+                        cv::rotate(src, dst, cv::ROTATE_180);
+                        break;
+                    case 270:
+                        cv::rotate(src, dst, cv::ROTATE_90_COUNTERCLOCKWISE);
+                        break;
+                        
+                    default:
+                    {
+                        
+                        //warpaffine not working as expected...
+
+                    }
+                        break;
+                }
+                
+                if (dst.data != NULL)
+                {
+                    std::vector<uchar> buf;
+                    if(imencode(format.c_str(), dst, buf)) {
+                        PA_Picture straight = PA_CreatePicture(&buf[0], (PA_long32)buf.size());
+                        auto end = std::chrono::steady_clock::now();
+                        double count = std::chrono::duration<double>(end - start).count();
+                        ob_set_p(object, L"image", straight);
+                        ob_set_b(object, L"success", true);
+                        ob_set_n(object, L"time", count);
+                    }
+                    
+                }
+                
+            }
         }
-        
+    }
+    catch(...)
+    {
+        // fall through - object still has success:false from above, and
+        // we still reach PA_ReturnObject below unconditionally.
     }
     
     PA_ReturnObject(params, object);

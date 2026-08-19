@@ -65,11 +65,7 @@
 
 static void Rotate_image(PA_PluginParameters params);
 
-static void ImageTransform(const cv::Mat &src, const cv::Mat &trans_mat, cv::Mat &dest);
-static cv::Mat CoordTransform(const cv::Mat &inv_mat, const cv::Mat &pos);
-static cv::Mat CreateTransMat(double angle, std::pair<int, int> &pivot);
-
 static void getMat(PA_PluginParameters params, short index, int flags, cv::Mat& img);
-static void getFormat(PA_PluginParameters params, short index, std::string& format);
+static bool getFormat(PA_PluginParameters params, short index, std::string& format);
 
 #endif /* PLUGIN_ROTATE_IMAGE_H */
